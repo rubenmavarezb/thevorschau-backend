@@ -1,5 +1,6 @@
 import User from '../models/User';
 /////////////////////////////////////////////////////
+import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
@@ -7,7 +8,7 @@ import { validationResult } from 'express-validator';
 require('dotenv').config({ path: 'variables.env'});
 ////////////////////////////////////////////////////
 
-export const authenticateUser = async (req, res, next) => {
+export const authenticateUser = async (req: Request, res: Response, next: NextFunction) => {
 
     
     //check for errors

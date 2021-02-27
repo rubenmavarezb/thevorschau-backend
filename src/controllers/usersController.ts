@@ -1,10 +1,11 @@
 import User from '../models/User';
 //////////////////////////////////////////////////////
+import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { validationResult } from 'express-validator';
 //////////////////////////////////////////////////////
 
-export const createUser = async (req: any, res: any) => {
+export const createUser = async (req: Request, res: Response) => {
 
     const errors = validationResult(req);
 

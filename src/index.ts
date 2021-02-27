@@ -4,6 +4,9 @@ import cors from 'cors';
 ///////////////////////////////////////
 import usersRoute from './routes/users';
 import authRoute from './routes/auth';
+import productsRoute from './routes/products';
+import cartRoute from './routes/cart';
+import favoritesRoute from './routes/favorites';
 ///////////////////////////////////////
 
 const app = express();
@@ -17,8 +20,11 @@ app.set('PORT', process.env.PORT || 4000)
 
 app.use('/api/users', usersRoute);
 app.use('/api/auth', authRoute);
+app.use('/api/products', productsRoute);
+app.use('/api/cart', cartRoute);
+app.use('/api/favorites', favoritesRoute);
 
 //Init app
 app.listen(app.get('PORT'), '0.0.0.0', () => {
-    console.log(`server is running in http://localhost:${app.get('PORT')}`)
+    console.log(`server is running in ${app.get('PORT')}`)
 })
