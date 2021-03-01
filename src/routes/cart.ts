@@ -1,5 +1,6 @@
 import express from 'express';
 ////////////////////////////////////////////////////////////
+import auth from '../middleware/auth';
 import { addToCart, getCart, updateItemInCart, deleteItemInCart } from '../controllers/cartController';
 ////////////////////////////////////////////////////////////
 
@@ -10,6 +11,7 @@ cartRoute.post('/',
 );
 
 cartRoute.get('/',
+    auth,
     getCart
 );
 

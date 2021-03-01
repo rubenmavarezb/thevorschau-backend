@@ -3,10 +3,12 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface ProductI extends Document {
     name: string;
     description: string;
+    category: string,
     gtin: string;
     photos: string[];
     price: number,
     stock: number;
+    quantity: number;
     created: Date
 }
 
@@ -17,6 +19,11 @@ const ProductSchema = new Schema({
         trim: true
     },
     description: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    category: {
         type: String,
         required: true,
         trim: true
@@ -33,6 +40,11 @@ const ProductSchema = new Schema({
     price: {
         type: Number,
         required: true
+    },
+    quantity: {
+        type: Number,
+        required: true,
+        default: 0
     },
     stock: {
         type: Number,

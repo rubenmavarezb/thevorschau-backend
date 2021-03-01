@@ -1,6 +1,6 @@
 import express from 'express';
 ////////////////////////////////////////////////////////////
-import { getAllProducts, getProductById, getProductsByCategory } from '../controllers/productsController';
+import { getAllProducts, getProductById, getProductsByCategory, addProduct } from '../controllers/productsController';
 ////////////////////////////////////////////////////////////
 
 const productsRoute = express.Router();
@@ -16,6 +16,10 @@ productsRoute.get('/category/:category',
 productsRoute.get('/product/:id',
     getProductById
 );
+
+productsRoute.post('/',
+    addProduct
+)
 
 
 

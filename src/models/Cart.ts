@@ -1,26 +1,25 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { ProductI } from './Product';
 import { UserI } from './User'
 
 export interface CartI extends Document {
-    products: ProductI[];
+    products: any[];
     timestamp: Date;
     owner: UserI;
 }
 
 const CartSchema = new Schema({
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: null
+    },
     products: {
-        type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Product'}],
+        type: Array,
         default: []
     },
     timestamp: {
         type: Date,
         default: Date.now()
-    },
-    owner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        default: null
     }
 })
 

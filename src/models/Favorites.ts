@@ -1,16 +1,15 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { ProductI } from './Product';
 import { UserI } from './User'
 
 export interface FavoritesI extends Document {
-    products: ProductI[];
+    products: any[];
     timestamp: Date;
     owner: UserI;
 }
 
 const FavoritesSchema = new Schema({
     products: {
-        type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Product'}],
+        type: Array,
         default: []
     },
     timestamp: {
