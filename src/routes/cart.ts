@@ -1,7 +1,7 @@
 import express from 'express';
 ////////////////////////////////////////////////////////////
 import auth from '../middleware/auth';
-import { addToCart, getCart, updateItemInCart, deleteItemInCart } from '../controllers/cartController';
+import { addToCart, getCart, updateItemInCart, deleteItemInCart, deleteCart } from '../controllers/cartController';
 ////////////////////////////////////////////////////////////
 
 const cartRoute = express.Router();
@@ -15,12 +15,16 @@ cartRoute.get('/',
     getCart
 );
 
-cartRoute.put('/:id',
+cartRoute.patch('/:id',
     updateItemInCart
 );
 
-cartRoute.delete('/:id',
+cartRoute.put('/:id',
     deleteItemInCart
+);
+
+cartRoute.delete('/:id', 
+    deleteCart
 );
 
 

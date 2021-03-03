@@ -2,9 +2,10 @@ import mongoose, { Schema, Document } from "mongoose";
 import { UserI } from './User'
 
 export interface CartI extends Document {
+    [x: string]: any;
+    owner: UserI;
     products: any[];
     timestamp: Date;
-    owner: UserI;
 }
 
 const CartSchema = new Schema({

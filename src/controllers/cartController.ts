@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { ObjectId } from 'mongoose'
 ///////////////////////////////////////////////////////
 import User from '../models/User';
 import Product from '../models/Product';
@@ -12,12 +13,12 @@ export const getCart = async (req: Request, res: Response) => {
 
     try {
         const userCart = await Cart.findOne({ owner:id });
-        console.log(userCart)
-        if(userCart) {
-            res.status(200).json({cart: userCart.products, id:userCart._id});
-        } else {
-            res.status(400).json({msg: 'You need to login o create an account in order to see your cart!'});
+        
+        if(!userCart) {
+           return res.status(400).json({msg: 'You need to login o create an account in order to see your cart!'});
         }
+
+        res.status(200).json({cart: userCart.products, id:userCart._id});
     } catch (error) {
         console.log(error);
     }
@@ -25,80 +26,77 @@ export const getCart = async (req: Request, res: Response) => {
 }
 
 export const addToCart = async (req: Request, res: Response) => {
-    console.log(req.body);
+
     const { id, prodID, quantity } = req.body;
+    let userCart = await Cart.findOne({ owner:id });
+    let product = await Product.findById(prodID);
 
     try {
-        let userCart = await Cart.findOne({ owner:id });
-        let product = await Product.findById(prodID);
 
-        product!.quantity = quantity;
+        if(product) product.quantity = quantity;
 
-        if(userCart){
-            if(userCart.products.indexOf(product)) {
-                console.log('entro en true')
-
-                if(product!.quantity > product!.stock) {
-
-                    product!.quantity = product!.stock
-                    await userCart.save();
-
-                    return res.status(400).json({msg:'There is no more in stock!'})
-                }
-
-                await userCart.save();
-
-                return res.status(200).json({msg:'Product modified!'})
-            } else {
-
-                userCart.products.push(product);
-
-                await userCart.save();
-
-                return res.status(200).json({msg:'Product added!'})
-            }
-
-        } else {
+        if(!userCart) {
 
             const data = {
                 owner: id,
                 products: [product]
             }
+    
             const newCart = await Cart.create(data);
             await newCart.save();
-            res.status(200).json({msg:'Product added to the cart!'})
+            return res.status(200).json({msg:'Product added to the cart!'})
         }
+
+        userCart.products.push(product);
+        await userCart.save();
+        res.status(200).json({msg:'Product added!'})
+
+
     } catch (error) {
         console.log(error)
     }
 }
 
 export const updateItemInCart = async (req: Request, res: Response) => {
-    console.log('Desde updateItemInCart');
-    console.log(req.body)
+    console.log(req.body);
+    const { cartID } = req.body
+    const { id } = req.params;
 }
 
 export const deleteItemInCart = async (req: Request, res: Response) => {
     console.log(req.body);
-    const { cartID } = req.body
+    const { cartID } = req.body;
     const { id } = req.params;
 
     try {
+
         let cartUser = await Cart.findById(cartID);
-        let product = await Product.findById(id);
-
-        console.log(product)
-
-        console.log(cartUser)
         
-        if(cartUser) {
-            const deleteProduct = cartUser.products.filter(data => data.product._id !== product?._id);
-            console.log(deleteProduct)
-            cartUser.products = deleteProduct;
-            console.log(cartUser.products)
-            // await cartUser.save();
-            return res.status(200).json({msg: "Product deleted!"})
+        if(!cartUser) {
+            return res.status(404).json({msg: "There was an error!"})
         }
+
+        let prueba = cartUser.products.find(product => product["_id"] === id);
+        console.log(prueba)
+        
+       
+
+        return null;
+
+        //await cartUser.save();
+        return res.status(200).json({msg: "Product deleted!"})
+        
+        
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const deleteCart = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        
     } catch (error) {
         console.log(error);
     }
