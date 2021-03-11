@@ -1,12 +1,8 @@
 import { Request, Response } from 'express';
-import { ObjectId } from 'mongoose'
 ///////////////////////////////////////////////////////
-import User from '../models/User';
 import Product from '../models/Product';
 import Cart from '../models/Cart';
 //////////////////////////////////////////////////////
-
-
 
 export const getCart = async (req: Request, res: Response) => {
     const { id } = req.body;
@@ -35,6 +31,7 @@ export const addToCart = async (req: Request, res: Response) => {
 
         if(product) product.quantity = quantity;
 
+        //Create the cart if the user doesn't have one and return
         if(!userCart) {
 
             const data = {
@@ -47,8 +44,21 @@ export const addToCart = async (req: Request, res: Response) => {
             return res.status(200).json({msg:'Product added to the cart!'})
         }
 
+        //Find the product in the cart to update it and return
+        const isInCart = userCart.products.find((element) => String(element._id) === prodID);
+
+        if(isInCart) {
+            const prodIndex = product ? userCart.products.indexOf(isInCart) : -1;
+
+            userCart.products[prodIndex].quantity += quantity;
+
+            await Cart.findOneAndUpdate({owner: id}, userCart, {new:true});
+
+            return res.status(200).json({msg:'Product modified!'})
+        }
+
         userCart.products.push(product);
-        await userCart.save();
+        await Cart.findOneAndUpdate({owner: id}, userCart, {new:true});
         res.status(200).json({msg:'Product added!'})
 
 
@@ -57,36 +67,30 @@ export const addToCart = async (req: Request, res: Response) => {
     }
 }
 
-export const updateItemInCart = async (req: Request, res: Response) => {
-    console.log(req.body);
-    const { cartID } = req.body
-    const { id } = req.params;
-}
-
 export const deleteItemInCart = async (req: Request, res: Response) => {
-    console.log(req.body);
+
     const { cartID } = req.body;
     const { id } = req.params;
 
-    try {
+    let cartUser = await Cart.findById(cartID);
 
-        let cartUser = await Cart.findById(cartID);
+    try {
         
         if(!cartUser) {
             return res.status(404).json({msg: "There was an error!"})
         }
 
-        let prueba = cartUser.products.find(product => product["_id"] === id);
-        console.log(prueba)
-        
-       
+        const isInCart = cartUser.products.find((element) => String(element._id) === id);
 
-        return null;
+        if(!isInCart) {
+            return res.status(404).json({msg: "There was an error or the product may be already deleted"});
+        }
 
-        //await cartUser.save();
-        return res.status(200).json({msg: "Product deleted!"})
-        
-        
+        cartUser.products = cartUser.products.filter(product => String(product._id) !== id);
+
+        await Cart.findOneAndUpdate({_id: cartID}, cartUser, {new:true});
+
+        res.status(200).json({msg: "Product deleted!"})
 
     } catch (error) {
         console.log(error);
@@ -94,9 +98,20 @@ export const deleteItemInCart = async (req: Request, res: Response) => {
 }
 
 export const deleteCart = async (req: Request, res: Response) => {
+
     const { id } = req.params;
+    let userCart = await Cart.findById(id);
+
     try {
         
+        if(!userCart) {
+            return res.status(404).json({msg: "There was an error!"})
+        }
+
+        await Cart.findByIdAndRemove(id)
+
+        res.status(200).json({msg: "Cart empty!"})
+
     } catch (error) {
         console.log(error);
     }

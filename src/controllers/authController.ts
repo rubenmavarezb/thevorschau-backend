@@ -50,6 +50,6 @@ export const authenticateUser = async (req: Request, res: Response, next: NextFu
 
 }
 
-export const userAuthenticated = async (req, res) => {
+export const userAuthenticated = async (req: any, res: Response) => {
     res.json({user: req.user})
 }

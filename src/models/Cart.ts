@@ -1,9 +1,10 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { UserI } from './User'
+import { UserI } from './User';
+import { ProductI } from './Product';
 
 export interface CartI extends Document {
-    [x: string]: any;
     owner: UserI;
+    //products: mongoose.Types.Array<any>;
     products: any[];
     timestamp: Date;
 }

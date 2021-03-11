@@ -1,6 +1,6 @@
 import express from 'express';
 ////////////////////////////////////////////////////////////
-import { addToFavorites, getFavorites, updateItemInFavorites, deleteItemInFavorites } from '../controllers/favoritesController';
+import { addToFavorites, getFavorites, deleteItemInFavorites, deleteFavorites } from '../controllers/favoritesController';
 ////////////////////////////////////////////////////////////
 
 const favoritesRoute = express.Router();
@@ -14,12 +14,12 @@ favoritesRoute.get('/',
 );
 
 favoritesRoute.put('/:id',
-    updateItemInFavorites
+    deleteItemInFavorites
 );
 
 favoritesRoute.delete('/:id',
-    deleteItemInFavorites
-);
+    deleteFavorites
+)
 
 
 
