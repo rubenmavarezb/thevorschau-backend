@@ -42,7 +42,7 @@ export const addToFavorites = async (req: Request, res: Response) => {
             return res.status(200).json({msg:'Product added to favorites!'})
         }
 
-        userFavorites.products.push(product);
+        if(product) userFavorites.products.push(product);
         await Favorites.findOneAndUpdate({owner: id}, userFavorites, {new:true});
         res.status(200).json({msg:'Product added!'})
 

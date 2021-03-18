@@ -4,8 +4,7 @@ import { ProductI } from './Product';
 
 export interface CartI extends Document {
     owner: UserI;
-    //products: mongoose.Types.Array<any>;
-    products: any[];
+    products: ProductI[];
     timestamp: Date;
 }
 

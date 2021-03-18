@@ -1,8 +1,9 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { UserI } from './User'
+import { UserI } from './User';
+import { ProductI } from './Product';
 
 export interface FavoritesI extends Document {
-    products: any[];
+    products: ProductI[];
     timestamp: Date;
     owner: UserI;
 }
