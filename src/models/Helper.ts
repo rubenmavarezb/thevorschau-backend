@@ -1,23 +1,23 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-export interface UserI extends Document {
+export interface HelperI extends Document {
     name: string;
     email: string;
     password: string;
 }
 
-const UserSchema = new Schema({
+const HelperSchema = new Schema({
     name: {
         type: String,
         required: true,
         trim: true,
-        maxlength:50
+        maxlength: 50
     },
     email: {
         type: String,
         required: true,
         trim: true,
-        unique: true, 
+        unique: true,
         maxlength: 50
     },
     password: {
@@ -28,4 +28,4 @@ const UserSchema = new Schema({
     }
 })
 
-export default mongoose.model<UserI>('User', UserSchema);
+export default mongoose.model<HelperI>('Helper', HelperSchema);

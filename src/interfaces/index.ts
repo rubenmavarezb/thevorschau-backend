@@ -18,3 +18,10 @@ export interface FavoriteProduct {
     product: Product;
     quantity: number;
 }
+
+export interface Chat {
+    chat: {
+        user: [],
+        helper: []
+    }
+}

@@ -3,7 +3,7 @@ import { UserI } from './User';
 import { ProductI } from './Product';
 
 export interface CartI extends Document {
-    owner: UserI;
+    user: UserI;
     //products: mongoose.Types.Array<any>;
     products: any[];
     timestamp: Date;

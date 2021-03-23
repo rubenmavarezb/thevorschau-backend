@@ -16,12 +16,14 @@ const ProductSchema = new Schema({
     name: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        maxlength: 100
     },
     description: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        maxlength: 1000
     },
     category: {
         type: String,
@@ -32,6 +34,7 @@ const ProductSchema = new Schema({
         type: String,
         required: true,
         trim: true,
+        max: 12
     },
     photos: {
         type: [{type: String}],
@@ -39,7 +42,8 @@ const ProductSchema = new Schema({
     },
     price: {
         type: Number,
-        required: true
+        required: true,
+        max: 10
     },
     quantity: {
         type: Number,
@@ -48,7 +52,8 @@ const ProductSchema = new Schema({
     },
     stock: {
         type: Number,
-        required: true
+        required: true,
+        max: 1000
     },
     created: {
         type: Date,
