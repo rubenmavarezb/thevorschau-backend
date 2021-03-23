@@ -57,7 +57,7 @@ export const addToCart = async (req: Request, res: Response) => {
             return res.status(200).json({msg:'Product modified!'})
         }
 
-        userCart.products.push(product);
+        if(product) userCart.products.push(product);
         await Cart.findOneAndUpdate({owner: id}, userCart, {new:true});
         res.status(200).json({msg:'Product added!'})
 

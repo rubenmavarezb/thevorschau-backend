@@ -25,3 +25,24 @@ export interface Chat {
         helper: []
     }
 }
+
+export interface ShippingAddress {
+    name: string;
+    lastname: string;
+    phone: string;
+    address: string;
+    zipcode: string;
+    city: string;
+    country: string;
+}
+
+export interface BillingAddress extends ShippingAddress {
+    email: string;
+}
+
+export interface PaymentInformation {
+    cardname: string;
+    cardnumber: string;
+    cardexpirationdate: Date;
+    cvv: string;
+}
