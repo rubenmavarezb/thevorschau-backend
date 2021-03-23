@@ -1,5 +1,5 @@
 import express from 'express';
-import {authenticateUser, userAuthenticated} from '../controllers/authController';
+import {authenticateUser, userAuthenticated, authenticateHelper, helperAuthenticated} from '../controllers/authController';
 import auth from '../middleware/auth';
 import { check } from 'express-validator';
 
@@ -16,6 +16,19 @@ authRoute.post('/',
 authRoute.get('/',
     auth,
     userAuthenticated
+);
+
+authRoute.post('/helper',
+    [
+        check('email', 'Add a correct email').isEmail(),
+        check('password', 'Password is required').not().isEmpty()
+    ],
+    authenticateHelper
+);
+
+authRoute.get('/helper',
+    auth,
+    helperAuthenticated
 );
 
 export default authRoute;

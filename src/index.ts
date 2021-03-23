@@ -3,6 +3,7 @@ import connectDB from './config/db';
 import cors from 'cors';
 ///////////////////////////////////////
 import usersRoute from './routes/users';
+import helpersRoute from './routes/helpers';
 import authRoute from './routes/auth';
 import productsRoute from './routes/products';
 import cartRoute from './routes/cart';
@@ -20,6 +21,7 @@ app.use(express.json());
 app.set('PORT', process.env.PORT || 4000)
 
 app.use('/api/users', usersRoute);
+app.use('/api/helpers', helpersRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/products', productsRoute);
 app.use('/api/cart', cartRoute);
